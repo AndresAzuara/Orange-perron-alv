@@ -1,0 +1,11 @@
+C:\Users\pepti\source\repos\Orange perron chido\bin\Debug\Orange perron chido.exe.config
+C:\Users\pepti\source\repos\Orange perron chido\bin\Debug\Orange perron chido.exe
+C:\Users\pepti\source\repos\Orange perron chido\bin\Debug\Orange perron chido.pdb
+C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange perron chido.csprojAssemblyReference.cache
+C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange_perron_chido.Properties.Resources.resources
+C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange perron chido.csproj.GenerateResource.cache
+C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange perron chido.exe
+C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange perron chido.pdb
+C:\Users\pepti\source\repos\Orange perron chido\bin\Debug\Files\Demo.csv
+C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange_perron_chido.Form1.resources
+C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange_perron_chido.StatisticAnalysisForm.resources
