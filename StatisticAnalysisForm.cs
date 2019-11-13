@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using Orange_perron_chido.Clases;
 using Orange_perron_chido.DTO;
 
 namespace Orange_perron_chido
@@ -16,8 +17,10 @@ namespace Orange_perron_chido
     public partial class StatisticAnalysisForm : Form
     {
         List<string> elementsToAnalyse;
-        public StatisticAnalysisForm(List<string> data, string columnName)
+        Form1 _anterior;
+        public StatisticAnalysisForm(List<string> data, string columnName, Form1 anterior)
         {
+            _anterior = anterior;
             elementsToAnalyse = data;
             InitializeComponent();
             if (isNumber().Item1)
@@ -77,26 +80,28 @@ namespace Orange_perron_chido
             }
             Frecuencias.Rows.Add(row.ToArray());
         }
-        private void makeNumericalAnalyse(List<int> elements, string columnName)
+        private void makeNumericalAnalyse(List<double> elements, string columnName)
         {
-            int mode;
-            int median;
-            int average = getAverage(elements);
+            double mode;
+            double median;
+            double average = getAverage(elements);
             Object x = 0;
             int i = 0;
             double[] valores = new double[6];
-            List<int> descendingList = elements.OrderByDescending(p => p).ToList();
-            getModeAndMedian(elements, out mode, out median);
-            int standarDesviation = getStandarDesviation(elements, average);
+            Stadistic.getModeAndMedian(elements, out mode, out median);
+            double standarDesviation = getStandarDesviation(elements, average);
             ValueMedian.Text = median.ToString();
             ValueMode.Text = mode.ToString();
             ValueAverage.Text = average.ToString();
             ValueStandarDesviation.Text = standarDesviation.ToString();
             elements.Sort();
-            valores[0] = elements.FirstOrDefault(); //Minimo
-            valores[1] = elements.LastOrDefault(); //Maximo
-            valores[2] = getQuartile(elements); //Quartile 1
-            valores[3] = getQuartile(descendingList); // Quartile 3
+            var quartile1 = getFirstQuartile(elements);
+            var quartile3 = getLastQuartile(elements);
+            var interquartileRange = Stadistic.getInterquartileRange(quartile3, quartile1);
+            valores[0] = Stadistic.getBoxPlotMin(quartile1, interquartileRange); //Minimo
+            valores[1] = Stadistic.getBoxPlotMax(quartile3, interquartileRange); //Maximo
+            valores[2] = quartile1; //Quartile 1
+            valores[3] = quartile3; // Quartile 3
             valores[4] = average; // media
             valores[5] = median; //mediana
             Series s = boxPlot.Series.Add(columnName);
@@ -117,36 +122,41 @@ namespace Orange_perron_chido
             boxPlot.Annotations.Add(textAnnotation);
         }
 
-        private float getValue(List<int> elements, int max)
+        private double getFirstQuartile(List<double> elements)
         {
-            double value = 0;
-            for(int i = 0; i < max; i++)
+            float value = 0;
+            value = (elements.Count + 1) / 4;
+            int round = (int)value;
+            double deci = value - round;
+            if ((value - Math.Floor(value)) == 0)
             {
-                value += elements.ElementAt(i);
-            }
-            return (float)value;
-        }
-
-        private float getQuartile(List<int> elements)
-        {
-            float mitad = elements.Count / 2.0f;
-            double value = 0;
-            int RoundValue = (int)Math.Floor(mitad);
-            if ((mitad - RoundValue) == 0)
-            {
-                value = getValue(elements, RoundValue - 1);
-                return (float)value / (RoundValue - 1);
+                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
             }
             else
             {
-                value = getValue(elements, RoundValue);
-                return (float)value / RoundValue;
+                return elements.ElementAt((int)value);
             }
         }
 
-        private int getStandarDesviation(List<int> numbers, int average)
+        private double getLastQuartile(List<double> elements)
         {
-            int count = 0;
+            float value = 0;
+            value = 3 * (elements.Count + 1) / 4;
+            int round = (int)value;
+            double deci = value - round;
+            if ((value - Math.Floor(value)) == 0)
+            {
+                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
+            }
+            else
+            {
+                return elements.ElementAt((int)value);
+            }
+        }
+
+        private int getStandarDesviation(List<double> numbers, double average)
+        {
+            double count = 0;
             foreach(var number in numbers)
             {
                 count += (number - average) * (number - average);
@@ -156,25 +166,9 @@ namespace Orange_perron_chido
             return (int)Math.Sqrt(count);
         }
 
-        private void getModeAndMedian(List<int> numbers, out int mode, out int median)
+        private double getAverage(List<double> numbers)
         {
-            numbers.Sort();
-            float mitad = numbers.Count / 2;
-            mode = numbers.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
-            if(mitad - Math.Round(mitad, 0) == 0)
-            {
-                median = numbers.ElementAt((int)mitad - 1) + numbers.ElementAt((int)mitad + 1);
-                median /= 2;
-            }
-            else
-            {
-                median = numbers.ElementAt((int)mitad);
-            }
-        }
-
-        private int getAverage(List<int> numbers)
-        {
-            int count = 0;
+            double count = 0;
             foreach(var number in numbers)
             {
                 count += number;
@@ -182,14 +176,14 @@ namespace Orange_perron_chido
             return count / numbers.Count;
         }
 
-        (bool, List<int>) isNumber()
+        private (bool, List<double>) isNumber()
         {
             bool isNumeric;
-            List<int> numeros = new List<int>();
-            int n;
+            List<double> numeros = new List<double>();
+            double n;
             foreach (var element in elementsToAnalyse)
             {
-                isNumeric = int.TryParse(element, out n);
+                isNumeric = double.TryParse(element, out n);
                 numeros.Add(n);
                 if (!isNumeric)
                 {
@@ -197,6 +191,12 @@ namespace Orange_perron_chido
                 }
             }
             return (true, numeros);
+        }
+
+        private void back_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            _anterior.ShowDialog();   
         }
     }
 }

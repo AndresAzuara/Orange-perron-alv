@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Collections;
+using Orange_perron_chido.Clases;
 
 namespace Orange_perron_chido
 {
@@ -106,6 +107,87 @@ namespace Orange_perron_chido
             }
         }
 
+        private bool isNumericColumn(int index)
+        {
+            int dummy;
+            for(int i = 0; i < tablaPrincipal.RowCount - 1; i++)
+            {
+                if(int.TryParse(tablaPrincipal.Rows[i].Cells[index].Value.ToString(), out dummy))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public List<double> getColumnList(int index)
+        {
+            double value;
+            List<double> valores = new List<double>();
+            for(int i = 0; i < tablaPrincipal.RowCount - 1; i++)
+            {
+                if(tablaPrincipal.Rows[i].Cells[index].Value.ToString() != "")
+                {
+                    double.TryParse(tablaPrincipal.Rows[i].Cells[index].Value.ToString(), out value);
+                    valores.Add(value);
+                }
+                
+            }
+            return valores;
+        }
+
+        public List<string> getCategoricalColumnList(int index)
+        {
+            string element;
+            List<string> valores = new List<string>();
+            for(int i = 0; i < tablaPrincipal.RowCount - 1; i++)
+            {
+                element = tablaPrincipal.Rows[i].Cells[index].Value.ToString();
+                if (element != "")
+                {
+                    valores.Add(element);
+                }
+            }
+            return valores;
+        }
+
+        private void checarValoresFaltantes()
+        {
+            double mediana;
+            double moda;
+            string titulo = "Corrección de valor";
+            for (int j = 0; j < tablaPrincipal.RowCount - 1; j++)
+            {
+                for(int i = 1; i < tablaPrincipal.ColumnCount; i++)
+                {
+                    if (tablaPrincipal.Rows[j].Cells[i].Value.Equals(""))
+                    {
+                        if (isNumericColumn(i))
+                        {
+                            var values = getColumnList(i);
+                            Stadistic.getModeAndMedian(values, out moda, out mediana);
+                            int value = Prompt.ShowDialog(moda.ToString(), mediana.ToString() , titulo);
+                            switch (value)
+                            {
+                                case 1:
+                                    tablaPrincipal.Rows[j].Cells[i].Value = moda;
+                                    break;
+                                case 2:
+                                    tablaPrincipal.Rows[j].Cells[i].Value = mediana;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            var values = getCategoricalColumnList(i);
+                            var mode = Stadistic.getCategoricalMode(values);
+                            tablaPrincipal.Rows[j].Cells[i].Value = mode;
+                        }
+                    }
+                }
+            }
+        }
+
         private void cargarInformacion()
         {
             int id = 1;
@@ -120,10 +202,13 @@ namespace Orange_perron_chido
                     break;
                     }
                     row.Add(id++);
+                    for(int i = 0; i < atributos.Count; i++)
+                    {
                     row.Add(valores.ElementAt(actual++));
-                    row.Add(valores.ElementAt(actual++));
+                    }
                     tablaPrincipal.Rows.Add(row.ToArray());
                 } while (completo);
+            checarValoresFaltantes();
             tablaPrincipal.BorderStyle = BorderStyle.None;
             tablaPrincipal.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
             tablaPrincipal.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
@@ -149,7 +234,7 @@ namespace Orange_perron_chido
                     columnElements.Add(row.Cells[columnIndex].Value.ToString());
                 }
             }
-            StatisticAnalysisForm analysis = new StatisticAnalysisForm(columnElements, tablaPrincipal.Columns[e.ColumnIndex].Name);
+            StatisticAnalysisForm analysis = new StatisticAnalysisForm(columnElements, tablaPrincipal.Columns[e.ColumnIndex].Name, this);
             this.Hide();
             analysis.Show();
         }
@@ -253,5 +338,39 @@ namespace Orange_perron_chido
             this.Hide();
             //statisticAnalysisForm.Show();
         }
+    }
+}
+
+
+
+public static class Prompt
+{
+    public static int ShowDialog(string moda, string mediana, string title)
+    {
+        int ModeOrMedian = 0; //Mode = 1, Median = 2
+        Form prompt = new Form();
+        prompt.Width = 500;
+        prompt.Height = 300;
+        prompt.Text = title;
+        Label textLAbel = new Label() { Left = 100, Top = 20, Text = $"Moda: { moda}" };
+        Label TextLabel2 = new Label() { Left = 200, Top = 20, Text = $"Mediana: { mediana}" };
+        Button Mode = new Button() { Text = "Moda", Left = 100, Width = 100, Top = 70 };
+        Button Median = new Button() { Text = "Mediana", Left = 200, Width = 100, Top = 70 };
+        Mode.Click += (sender, e) =>
+        {
+            ModeOrMedian = 1;
+            prompt.Close();
+        };
+        Median.Click += (sender, e) =>
+        {
+            ModeOrMedian = 2;
+            prompt.Close();
+        };
+        prompt.Controls.Add(Mode);
+        prompt.Controls.Add(Median);
+        prompt.Controls.Add(textLAbel);
+        prompt.Controls.Add(TextLabel2);
+        prompt.ShowDialog();
+        return ModeOrMedian;
     }
 }

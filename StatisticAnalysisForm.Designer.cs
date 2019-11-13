@@ -40,6 +40,7 @@
             this.ValueStandarDesviation = new System.Windows.Forms.Label();
             this.boxPlot = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Frecuencias = new System.Windows.Forms.DataGridView();
+            this.back = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.boxPlot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Frecuencias)).BeginInit();
             this.SuspendLayout();
@@ -136,11 +137,22 @@
             this.Frecuencias.Size = new System.Drawing.Size(669, 86);
             this.Frecuencias.TabIndex = 9;
             // 
+            // back
+            // 
+            this.back.Location = new System.Drawing.Point(48, 324);
+            this.back.Name = "back";
+            this.back.Size = new System.Drawing.Size(75, 23);
+            this.back.TabIndex = 10;
+            this.back.Text = "Atras";
+            this.back.UseVisualStyleBackColor = true;
+            this.back.Click += new System.EventHandler(this.back_Click);
+            // 
             // StatisticAnalysisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.back);
             this.Controls.Add(this.Frecuencias);
             this.Controls.Add(this.boxPlot);
             this.Controls.Add(this.ValueStandarDesviation);
@@ -172,5 +184,6 @@
         private System.Windows.Forms.Label ValueStandarDesviation;
         private System.Windows.Forms.DataVisualization.Charting.Chart boxPlot;
         private System.Windows.Forms.DataGridView Frecuencias;
+        private System.Windows.Forms.Button back;
     }
 }
