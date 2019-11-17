@@ -41,6 +41,8 @@
             this.boxPlot = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Frecuencias = new System.Windows.Forms.DataGridView();
             this.back = new System.Windows.Forms.Button();
+            this.dataName = new System.Windows.Forms.Label();
+            this.limpieza = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.boxPlot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Frecuencias)).BeginInit();
             this.SuspendLayout();
@@ -123,9 +125,9 @@
             this.boxPlot.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.boxPlot.Legends.Add(legend1);
-            this.boxPlot.Location = new System.Drawing.Point(203, 13);
+            this.boxPlot.Location = new System.Drawing.Point(203, 39);
             this.boxPlot.Name = "boxPlot";
-            this.boxPlot.Size = new System.Drawing.Size(554, 425);
+            this.boxPlot.Size = new System.Drawing.Size(554, 399);
             this.boxPlot.TabIndex = 8;
             this.boxPlot.Text = "chart1";
             // 
@@ -139,7 +141,7 @@
             // 
             // back
             // 
-            this.back.Location = new System.Drawing.Point(48, 324);
+            this.back.Location = new System.Drawing.Point(12, 415);
             this.back.Name = "back";
             this.back.Size = new System.Drawing.Size(75, 23);
             this.back.TabIndex = 10;
@@ -147,11 +149,32 @@
             this.back.UseVisualStyleBackColor = true;
             this.back.Click += new System.EventHandler(this.back_Click);
             // 
+            // dataName
+            // 
+            this.dataName.AutoSize = true;
+            this.dataName.Location = new System.Drawing.Point(315, 13);
+            this.dataName.Name = "dataName";
+            this.dataName.Size = new System.Drawing.Size(35, 13);
+            this.dataName.TabIndex = 11;
+            this.dataName.Text = "label1";
+            // 
+            // limpieza
+            // 
+            this.limpieza.Location = new System.Drawing.Point(13, 353);
+            this.limpieza.Name = "limpieza";
+            this.limpieza.Size = new System.Drawing.Size(75, 23);
+            this.limpieza.TabIndex = 12;
+            this.limpieza.Text = "Limpieza";
+            this.limpieza.UseVisualStyleBackColor = true;
+            this.limpieza.Click += new System.EventHandler(this.limpieza_Click);
+            // 
             // StatisticAnalysisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.limpieza);
+            this.Controls.Add(this.dataName);
             this.Controls.Add(this.back);
             this.Controls.Add(this.Frecuencias);
             this.Controls.Add(this.boxPlot);
@@ -185,5 +208,7 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart boxPlot;
         private System.Windows.Forms.DataGridView Frecuencias;
         private System.Windows.Forms.Button back;
+        private System.Windows.Forms.Label dataName;
+        private System.Windows.Forms.Button limpieza;
     }
 }

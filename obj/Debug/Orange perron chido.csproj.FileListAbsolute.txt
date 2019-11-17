@@ -9,3 +9,5 @@ C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange perron chido.pd
 C:\Users\pepti\source\repos\Orange perron chido\bin\Debug\Files\Demo.csv
 C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange_perron_chido.Form1.resources
 C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange_perron_chido.StatisticAnalysisForm.resources
+C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange_perron_chido.AutomaticKnowledge.resources
+C:\Users\pepti\source\repos\Orange perron chido\obj\Debug\Orange_perron_chido.DataCleaning.resources

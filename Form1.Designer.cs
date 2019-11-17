@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.accionadorArchivo = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tablaPrincipal = new System.Windows.Forms.DataGridView();
@@ -47,6 +47,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.MenuVertical = new System.Windows.Forms.Panel();
+            this.columnToAutomatic = new System.Windows.Forms.ComboBox();
+            this.DevelopAnalyse = new System.Windows.Forms.Button();
+            this.AlgoritmNames = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.tablaPrincipal)).BeginInit();
             this.MenuVertical.SuspendLayout();
             this.SuspendLayout();
@@ -81,15 +84,15 @@
             // tablaPrincipal
             // 
             this.tablaPrincipal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.tablaPrincipal.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.tablaPrincipal.DefaultCellStyle = dataGridViewCellStyle4;
             this.tablaPrincipal.Location = new System.Drawing.Point(145, 40);
             this.tablaPrincipal.Name = "tablaPrincipal";
             this.tablaPrincipal.RowTemplate.Height = 25;
@@ -285,12 +288,55 @@
             this.MenuVertical.Size = new System.Drawing.Size(142, 450);
             this.MenuVertical.TabIndex = 18;
             // 
+            // columnToAutomatic
+            // 
+            this.columnToAutomatic.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(66)))), ((int)(((byte)(82)))));
+            this.columnToAutomatic.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.columnToAutomatic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.columnToAutomatic.ForeColor = System.Drawing.SystemColors.Window;
+            this.columnToAutomatic.FormattingEnabled = true;
+            this.columnToAutomatic.Location = new System.Drawing.Point(624, 345);
+            this.columnToAutomatic.Name = "columnToAutomatic";
+            this.columnToAutomatic.Size = new System.Drawing.Size(164, 21);
+            this.columnToAutomatic.TabIndex = 19;
+            // 
+            // DevelopAnalyse
+            // 
+            this.DevelopAnalyse.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(66)))), ((int)(((byte)(82)))));
+            this.DevelopAnalyse.FlatAppearance.BorderSize = 0;
+            this.DevelopAnalyse.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.DevelopAnalyse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DevelopAnalyse.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DevelopAnalyse.ForeColor = System.Drawing.SystemColors.Control;
+            this.DevelopAnalyse.Location = new System.Drawing.Point(649, 400);
+            this.DevelopAnalyse.Name = "DevelopAnalyse";
+            this.DevelopAnalyse.Size = new System.Drawing.Size(121, 38);
+            this.DevelopAnalyse.TabIndex = 20;
+            this.DevelopAnalyse.Text = "Analizar";
+            this.DevelopAnalyse.UseVisualStyleBackColor = false;
+            this.DevelopAnalyse.Click += new System.EventHandler(this.DevelopAnalyse_Click);
+            // 
+            // AlgoritmNames
+            // 
+            this.AlgoritmNames.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(66)))), ((int)(((byte)(82)))));
+            this.AlgoritmNames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AlgoritmNames.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AlgoritmNames.ForeColor = System.Drawing.SystemColors.Window;
+            this.AlgoritmNames.FormattingEnabled = true;
+            this.AlgoritmNames.Location = new System.Drawing.Point(624, 373);
+            this.AlgoritmNames.Name = "AlgoritmNames";
+            this.AlgoritmNames.Size = new System.Drawing.Size(164, 21);
+            this.AlgoritmNames.TabIndex = 21;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(66)))), ((int)(((byte)(82)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.AlgoritmNames);
+            this.Controls.Add(this.DevelopAnalyse);
+            this.Controls.Add(this.columnToAutomatic);
             this.Controls.Add(this.MenuVertical);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -334,6 +380,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel MenuVertical;
+        private System.Windows.Forms.ComboBox columnToAutomatic;
+        private System.Windows.Forms.Button DevelopAnalyse;
+        private System.Windows.Forms.ComboBox AlgoritmNames;
     }
 }
 

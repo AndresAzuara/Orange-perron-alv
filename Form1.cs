@@ -104,7 +104,13 @@ namespace Orange_perron_chido
             foreach (var atributo in atributos)
             {
                 tablaPrincipal.Columns[columnas++].Name = atributo;
+                columnToAutomatic.Items.Add(atributo);
             }
+            AlgoritmNames.Items.Add("Zero-R");
+            AlgoritmNames.Items.Add("One-R");
+            AlgoritmNames.Items.Add("Naive-Bayes");
+            AlgoritmNames.Items.Add("K-means");
+            AlgoritmNames.Items.Add("K-NN");
         }
 
         private bool isNumericColumn(int index)
@@ -208,7 +214,7 @@ namespace Orange_perron_chido
                     }
                     tablaPrincipal.Rows.Add(row.ToArray());
                 } while (completo);
-            checarValoresFaltantes();
+            ///checarValoresFaltantes();
             tablaPrincipal.BorderStyle = BorderStyle.None;
             tablaPrincipal.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
             tablaPrincipal.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
@@ -234,7 +240,8 @@ namespace Orange_perron_chido
                     columnElements.Add(row.Cells[columnIndex].Value.ToString());
                 }
             }
-            StatisticAnalysisForm analysis = new StatisticAnalysisForm(columnElements, tablaPrincipal.Columns[e.ColumnIndex].Name, this);
+            
+            StatisticAnalysisForm analysis = new StatisticAnalysisForm(columnElements, tablaPrincipal.Columns[e.ColumnIndex].Name, valores, atributos, columnIndex);
             this.Hide();
             analysis.Show();
         }
@@ -337,6 +344,59 @@ namespace Orange_perron_chido
             //StatisticAnalysisForm statisticAnalysisForm = new StatisticAnalysisForm();
             this.Hide();
             //statisticAnalysisForm.Show();
+        }
+
+        private List<List<string>> getColumnsValues()
+        {
+            List<List<string>> columnas = new List<List<string>>();
+            for(int i = 0; i < tablaPrincipal.ColumnCount; i++)
+            {
+                List<string> column = new List<string>();
+                column.Add(tablaPrincipal.Columns[i].Name);
+                foreach(DataGridViewRow row in tablaPrincipal.Rows)
+                {
+                    if(row.Cells[i].Value != null)
+                    {
+                        column.Add(row.Cells[i].Value.ToString());
+                    }
+                }
+                columnas.Add(column);
+            }
+            return columnas;
+        }
+
+        private void DevelopAnalyse_Click(object sender, EventArgs e)
+        {
+            var columnName = columnToAutomatic.Text;
+            var algoritm = AlgoritmNames.Text;
+            var index = getColumnIndex(columnName);
+            List<string> columnElements = new List<string>();
+            foreach(DataGridViewRow row in tablaPrincipal.Rows)
+            {
+                if(row.Cells[index].Value != null)
+                {
+                    columnElements.Add(row.Cells[index].Value.ToString());
+                }
+            }
+
+            switch (algoritm)
+            {
+                case "Zero-R":
+                    AutomaticKnowledge automaticForm = new AutomaticKnowledge(columnElements, algoritm);
+                    this.Hide();
+                    automaticForm.Show();
+                    break;
+                case "One-R":
+                    OneRAK oner = new OneRAK(getColumnsValues(), index);
+                    break;
+            }
+
+            
+        }
+
+        private int getColumnIndex(string columnName)
+        {
+            return tablaPrincipal.Columns[columnName].Index;
         }
     }
 }

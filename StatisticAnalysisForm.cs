@@ -17,12 +17,21 @@ namespace Orange_perron_chido
     public partial class StatisticAnalysisForm : Form
     {
         List<string> elementsToAnalyse;
-        Form1 _anterior;
-        public StatisticAnalysisForm(List<string> data, string columnName, Form1 anterior)
+        List<string> valores;
+        List<string> atributos;
+        int columnIndex;
+        string columnName;
+        BoxPlotElements boxplot;
+        public StatisticAnalysisForm(List<string> data, string columnName, List<string> valores, List<string> atributos, int columnIndex)
         {
-            _anterior = anterior;
+            this.columnIndex = columnIndex;
+            this.valores = valores;
+            this.atributos = atributos;
             elementsToAnalyse = data;
+            this.columnName = columnName;
+            boxplot = new BoxPlotElements();
             InitializeComponent();
+            dataName.Text = columnName;
             if (isNumber().Item1)
             {
                 Mode.Text = "Moda";
@@ -46,6 +55,68 @@ namespace Orange_perron_chido
                 boxPlot.Visible = false;
                 Frecuencias.Visible = true;
                 makeCategoricalAnalyse(data);
+            }
+
+        }
+
+        private bool elementIsNumeric(List<string> elements)
+        {
+            double number;
+            foreach(var element in elements)
+            {
+                if(double.TryParse(element, out number))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private List<double> getNumbersList(List<string> elements)
+        {
+            List<double> numbers = new List<double>();
+            double number;
+            foreach(var element in elements)
+            {
+                if (!element.Equals(""))
+                {
+                    double.TryParse(element, out number);
+                    numbers.Add(number);
+                }
+                
+            }
+            return numbers;
+        }
+
+        private void checarValoresFaltantes()
+        {
+            double mediana;
+            double moda;
+            string titulo = "Corrección de valor";
+            for(int i = 0; i < elementsToAnalyse.Count; i++)
+            {
+                if (elementsToAnalyse.ElementAt(i).Equals(""))
+                {
+                    if (elementIsNumeric(elementsToAnalyse))
+                    {
+                        Stadistic.getModeAndMedian(getNumbersList(elementsToAnalyse), out moda, out mediana);
+                        int value = Prompt.ShowDialog(moda.ToString(), mediana.ToString(), titulo);
+                        switch (value)
+                        {
+                            case 1:
+                                elementsToAnalyse[i] = moda.ToString();
+                                break;
+                            case 2:
+                                elementsToAnalyse[i] = mediana.ToString();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        var mode = Stadistic.getCategoricalMode(elementsToAnalyse);
+                        elementsToAnalyse[i] = mode;
+                    }
+                }
             }
         }
 
@@ -80,7 +151,7 @@ namespace Orange_perron_chido
             }
             Frecuencias.Rows.Add(row.ToArray());
         }
-        private void makeNumericalAnalyse(List<double> elements, string columnName)
+        private double[] makeNumericalAnalyse(List<double> elements, string columnName)
         {
             double mode;
             double median;
@@ -104,6 +175,12 @@ namespace Orange_perron_chido
             valores[3] = quartile3; // Quartile 3
             valores[4] = average; // media
             valores[5] = median; //mediana
+            boxplot.avg = valores[4];
+            boxplot.max = valores[1];
+            boxplot.med = valores[5];
+            boxplot.min = valores[0];
+            boxplot.q1 = valores[2];
+            boxplot.q3 = valores[3];
             Series s = boxPlot.Series.Add(columnName);
             s.ChartType = SeriesChartType.BoxPlot;
             s.Points.Add(valores);
@@ -111,6 +188,7 @@ namespace Orange_perron_chido
             DrawAnnotation("Máximo - ", 1, columnName, valores);
             DrawAnnotation("Cuartil 1 - ", 2, columnName, valores);
             DrawAnnotation("Cuartil 2 - ", 3, columnName, valores);
+            return valores;
         }
 
         private void DrawAnnotation(string text, int index, string columnName, double[] valores)
@@ -130,11 +208,11 @@ namespace Orange_perron_chido
             double deci = value - round;
             if ((value - Math.Floor(value)) == 0)
             {
-                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
+                return elements.ElementAt((int)value);
             }
             else
             {
-                return elements.ElementAt((int)value);
+                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
             }
         }
 
@@ -146,11 +224,11 @@ namespace Orange_perron_chido
             double deci = value - round;
             if ((value - Math.Floor(value)) == 0)
             {
-                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
+                return elements.ElementAt((int)value);
             }
             else
             {
-                return elements.ElementAt((int)value);
+                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
             }
         }
 
@@ -183,11 +261,14 @@ namespace Orange_perron_chido
             double n;
             foreach (var element in elementsToAnalyse)
             {
-                isNumeric = double.TryParse(element, out n);
-                numeros.Add(n);
-                if (!isNumeric)
+                if(element != "")
                 {
-                    return (false, null);
+                    isNumeric = double.TryParse(element, out n);
+                    numeros.Add(n);
+                    if (!isNumeric)
+                    {
+                        return (false, null);
+                    }
                 }
             }
             return (true, numeros);
@@ -195,8 +276,46 @@ namespace Orange_perron_chido
 
         private void back_Click(object sender, EventArgs e)
         {
-            this.Close();
-            _anterior.ShowDialog();   
+            
+        }
+
+        private void correctOutliers(double[] valores, List<double> numbers)
+        {
+            double diferencia = (valores[1] - valores[3]) - (valores[2] - valores[0]);
+            double newValue;
+            if(diferencia == 0)
+            {
+                newValue = valores[4];
+            }
+            else
+            {
+                newValue = valores[5];
+            }
+            for(int i = 0; i < numbers.Count; i++)
+            {
+                if(numbers.ElementAt(i) > valores[1] || numbers.ElementAt(i) < valores[0])
+                {
+                    numbers[i] = newValue;
+                }
+            }
+        }
+
+        private void limpieza_Click(object sender, EventArgs e)
+        {
+            DataCleaning dc = new DataCleaning(valores, atributos, elementsToAnalyse, columnIndex, boxplot);
+            this.Hide();
+            dc.Show();
+            /*
+            checarValoresFaltantes();
+            boxPlot.Series.Clear();
+            boxPlot.Annotations.Clear();
+            List<double> numbers = isNumber().Item2;
+            double[] valores = makeNumericalAnalyse(numbers, columnName);
+            correctOutliers(valores, numbers);
+            boxPlot.Series.Clear();
+            boxPlot.Annotations.Clear();
+            makeNumericalAnalyse(numbers, columnName);
+            */
         }
     }
 }
