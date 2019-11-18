@@ -61,6 +61,8 @@
       <DependentUpon>DataCleaning.cs</DependentUpon>
     </Compile>
     <Compile Include="DTO\BoxPlotElements.cs" />
+    <Compile Include="DTO\FrequenceList.cs" />
+    <Compile Include="DTO\Frequences.cs" />
     <Compile Include="DTO\ValueAndQuantityDTO.cs" />
     <Compile Include="DTO\ZeroR.cs" />
     <Compile Include="Form1.cs">

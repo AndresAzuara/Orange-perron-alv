@@ -32,6 +32,9 @@
             this.corregirOutliers = new System.Windows.Forms.Button();
             this.DataWatch = new System.Windows.Forms.Button();
             this.optionsWatch = new System.Windows.Forms.ComboBox();
+            this.muestreoNombreArchivo = new System.Windows.Forms.TextBox();
+            this.transformacionValores = new System.Windows.Forms.ComboBox();
+            this.transformatValor = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tablaPrincipal)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,11 +75,39 @@
             this.optionsWatch.Size = new System.Drawing.Size(121, 21);
             this.optionsWatch.TabIndex = 3;
             // 
+            // muestreoNombreArchivo
+            // 
+            this.muestreoNombreArchivo.Location = new System.Drawing.Point(342, 371);
+            this.muestreoNombreArchivo.Name = "muestreoNombreArchivo";
+            this.muestreoNombreArchivo.Size = new System.Drawing.Size(142, 20);
+            this.muestreoNombreArchivo.TabIndex = 4;
+            // 
+            // transformacionValores
+            // 
+            this.transformacionValores.FormattingEnabled = true;
+            this.transformacionValores.Location = new System.Drawing.Point(507, 373);
+            this.transformacionValores.Name = "transformacionValores";
+            this.transformacionValores.Size = new System.Drawing.Size(121, 21);
+            this.transformacionValores.TabIndex = 5;
+            // 
+            // transformatValor
+            // 
+            this.transformatValor.Location = new System.Drawing.Point(646, 373);
+            this.transformatValor.Name = "transformatValor";
+            this.transformatValor.Size = new System.Drawing.Size(142, 23);
+            this.transformatValor.TabIndex = 6;
+            this.transformatValor.Text = "Transformar";
+            this.transformatValor.UseVisualStyleBackColor = true;
+            this.transformatValor.Click += new System.EventHandler(this.transformatValor_Click);
+            // 
             // DataCleaning
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.transformatValor);
+            this.Controls.Add(this.transformacionValores);
+            this.Controls.Add(this.muestreoNombreArchivo);
             this.Controls.Add(this.optionsWatch);
             this.Controls.Add(this.DataWatch);
             this.Controls.Add(this.corregirOutliers);
@@ -85,6 +116,7 @@
             this.Text = "DataCleaning";
             ((System.ComponentModel.ISupportInitialize)(this.tablaPrincipal)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -94,5 +126,8 @@
         private System.Windows.Forms.Button corregirOutliers;
         private System.Windows.Forms.Button DataWatch;
         private System.Windows.Forms.ComboBox optionsWatch;
+        private System.Windows.Forms.TextBox muestreoNombreArchivo;
+        private System.Windows.Forms.ComboBox transformacionValores;
+        private System.Windows.Forms.Button transformatValor;
     }
 }

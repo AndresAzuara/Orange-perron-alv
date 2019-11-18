@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,9 @@ namespace Orange_perron_chido
             makeGrid();
             optionsWatch.Items.Add("Con reemplazo");
             optionsWatch.Items.Add("Sin reemplazo");
+            transformacionValores.Items.Add("Min - Max");
+            transformacionValores.Items.Add("Z-score Desviacion Estandar");
+            transformacionValores.Items.Add("Z-score Desviacion Media Absoluta");
         }
 
         private void insertarHeader()
@@ -168,8 +172,97 @@ namespace Orange_perron_chido
 
         private void corregirOutliers_Click(object sender, EventArgs e)
         {
+            if (elementIsNumeric(elementsToAnalyse))
+            {
+                List<double> numbers = getNumbersList(elementsToAnalyse);
+                correctOutliers(boxplot, numbers);
+            }
+        }
+
+        private void getNewMinAndMax()
+        {
+            var minAndMax = getActualMinAndMax();
+            double actualMin = minAndMax.Item1;
+            double actualMax = minAndMax.Item2;
             List<double> numbers = getNumbersList(elementsToAnalyse);
-            correctOutliers(boxplot, numbers);
+            double number = 0;
+            if (elementIsNumeric(elementsToAnalyse))
+            {
+                for(int i = 0; i < numbers.Count; i++)
+                {
+                    number = numbers.ElementAt(i);
+                    if (!elementsToAnalyse.ElementAt(i).Equals(null))
+                    {
+                        number = (number - actualMin) / (actualMax - actualMin);
+                        number *= (1 - 0) + 0;
+                        numbers[i] = number;
+                        elementsToAnalyse[i] = numbers[i].ToString();
+                    }
+                }
+                for (int y = 0; y < tablaPrincipal.Rows.Count - 1; y++)
+                {
+                    tablaPrincipal.Rows[y].Cells[columnIndex].Value = elementsToAnalyse[y];
+                }
+            }
+        }
+
+        private (double, double) getActualMinAndMax()
+        {
+            double minimo;
+            double maximo;
+            List<double> numeros = getNumbersList(elementsToAnalyse);
+            numeros.Sort();
+            minimo = numeros.Select(r => r).FirstOrDefault();
+            maximo = numeros.Select(r => r).LastOrDefault();
+            return (minimo, maximo);
+        }
+
+        private void writeToFile(string path, List<Object[]> data, List<string> columnNames)
+        {
+            int contador = 0;
+            int contadorData = 0;
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            File.Create(path).Dispose();
+            using (StreamWriter w = File.AppendText(path))
+            {
+                Console.WriteLine("header");
+                foreach (var column in columnNames)
+                {
+                    Console.WriteLine(column);
+                    w.Write(column);
+                    if (++contador != columnNames.Count)
+                    {
+                        w.Write(",");
+                    }
+                    else
+                    {
+                        w.WriteLine("");
+                    }
+                }
+                contador = 0;
+                Console.WriteLine("elementos");
+                data.RemoveAt(data.Count - 1);
+                foreach (var el in data)
+                {
+                    foreach (var ele in el)
+                    {
+                        w.Write(ele);
+                        if (++contadorData != el.Length)
+                        {
+                            w.Write(",");
+                        }
+                        else if (++contador != data.Count)
+                        {
+                            w.WriteLine("");
+                        }
+                    }
+                    contadorData = 0;
+                }
+                w.Close();
+            }
         }
 
         private void DataWatch_Click(object sender, EventArgs e)
@@ -178,33 +271,97 @@ namespace Orange_perron_chido
             int quantity = rnd.Next(1, elementsToAnalyse.Count);
             List<double> numeros = getNumbersList(elementsToAnalyse);
             int index;
-            List<double> elements = new List<double> ();
-            switch(optionsWatch.Text){
+            List<Object[]> elements = new List<Object[]>();
+            Object[] auxArray;
+            int o = 0;
+            switch (optionsWatch.Text)
+            {
                 case "Con reemplazo":
-                    for(int i = 0; i < quantity; i++)
+                    for (int i = 0; i < quantity; i++)
                     {
-                        index = rnd.Next(0, elementsToAnalyse.Count);
-                        elements.Add(numeros.ElementAt(index));
+                        index = rnd.Next(0, (valores.Count / atributos.Count));
+                        index *= atributos.Count;
+                        auxArray = new Object[atributos.Count];
+                        for (int y = index; y < index + 4; y++)
+                        {
+                            auxArray[o++] = valores.ElementAt(y);
+                        }
+                        elements.Add(auxArray);
+                        auxArray = null;
+                        o = 0;
                     }
                     break;
                 case "Sin reemplazo":
                     List<int> indices = new List<int>();
                     int aux;
-                    for(int i = 0; i < quantity; i++)
+                    for (int i = 0; i < quantity; i++)
                     {
-                        aux = 0;
                         do
                         {
-                            index = rnd.Next(0, elementsToAnalyse.Count);
-                            aux = indices.Find((ei) => ei == index);
-                            if (aux == 0) 
+                            index = rnd.Next(0, (valores.Count / atributos.Count));
+                            index *= atributos.Count;
+                            foreach (var num in indices)
                             {
-                                elements.Add(numeros.ElementAt(index));
+                                if (index.Equals(num))
+                                {
+                                    index = -1;
+                                }
                             }
-                        } while (aux != 0);
+                        } while (index == -1);
+                        indices.Add(index);
+                        auxArray = new Object[atributos.Count];
+                        for (int y = index; y < index + 4; y++)
+                        {
+                            auxArray[o++] = valores.ElementAt(y);
+                        }
+                        elements.Add(auxArray);
+                        auxArray = null;
+                        o = 0;
                     }
                     break;
             }
+                        string path = string.Format(@"C:\Users\pepti\source\repos\Orange-perron-alv\Files\{0}.csv", muestreoNombreArchivo.Text);
+                        writeToFile(path, elements, atributos);
         }
-    }
-}
+
+        private void getZScoreStandarDesviation()
+        {
+            List<double> numbers = getNumbersList(elementsToAnalyse);
+            double average = Stadistic.getAverage(numbers);
+            double standarDesviation = Stadistic.getStandarDesviation(numbers);
+            for(int i = 0; i < numbers.Count; i++)
+            {
+                numbers[i] = (numbers[i] - average) / standarDesviation;
+                tablaPrincipal.Rows[i].Cells[columnIndex].Value = numbers[i].ToString();
+            }
+        }
+
+        private void getZScoreAbsolute()
+        {
+            List<double> numbers = getNumbersList(elementsToAnalyse);
+            double average = Stadistic.getAverage(numbers);
+            double absoluteMeanDesviation = Stadistic.getAbsoluteMeanDesviation(numbers);
+            for(int i = 0; i < numbers.Count; i++)
+            {
+                numbers[i] = (numbers[i] - average) / absoluteMeanDesviation;
+                tablaPrincipal.Rows[i].Cells[columnIndex].Value = numbers[i].ToString();
+            }
+        }
+
+        private void transformatValor_Click(object sender, EventArgs e)
+        {
+            switch (transformacionValores.Text)
+            {
+                case "Min - Max":
+                    getNewMinAndMax();
+                    break;
+                case "Z-score Desviacion Estandar":
+                    getZScoreStandarDesviation();
+                    break;
+                case "Z-score Desviacion Media Absoluta":
+                    getZScoreAbsolute();
+                    break;
+            }
+        }
+    } 
+        }
