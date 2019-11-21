@@ -19,11 +19,13 @@ namespace Orange_perron_chido
         List<string> elementsToAnalyse;
         List<string> valores;
         List<string> atributos;
+        Form1 anterior;
         int columnIndex;
         string columnName;
         BoxPlotElements boxplot;
-        public StatisticAnalysisForm(List<string> data, string columnName, List<string> valores, List<string> atributos, int columnIndex)
+        public StatisticAnalysisForm(List<string> data, string columnName, List<string> valores, List<string> atributos, int columnIndex, Form1 anterior)
         {
+            this.anterior = anterior;
             this.columnIndex = columnIndex;
             this.valores = valores;
             this.atributos = atributos;
@@ -276,7 +278,8 @@ namespace Orange_perron_chido
 
         private void back_Click(object sender, EventArgs e)
         {
-            
+            anterior.Show();
+            this.Close();
         }
 
         private void correctOutliers(double[] valores, List<double> numbers)

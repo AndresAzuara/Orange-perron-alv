@@ -34,6 +34,14 @@ namespace Orange_perron_chido
             int valoresNoFaltantes;
             float propocionValoresFaltantes;
             string shortFileName;
+            if (tablaPrincipal.Rows.Count != 0)
+            {
+                tablaPrincipal.Rows.Clear();
+                tablaPrincipal.Columns.Clear();
+                columnToAutomatic.Items.Clear();
+                atributos.RemoveRange(0, atributos.Count);
+                valores.RemoveRange(0, valores.Count);
+            }
             if (ofl.ShowDialog() == DialogResult.OK)
             {
                 nombreArchivo = ofl.FileName;
@@ -241,7 +249,7 @@ namespace Orange_perron_chido
                 }
             }
             
-            StatisticAnalysisForm analysis = new StatisticAnalysisForm(columnElements, tablaPrincipal.Columns[e.ColumnIndex].Name, valores, atributos, columnIndex);
+            StatisticAnalysisForm analysis = new StatisticAnalysisForm(columnElements, tablaPrincipal.Columns[e.ColumnIndex].Name, valores, atributos, columnIndex, this);
             this.Hide();
             analysis.Show();
         }
@@ -382,7 +390,7 @@ namespace Orange_perron_chido
             switch (algoritm)
             {
                 case "Zero-R":
-                    AutomaticKnowledge automaticForm = new AutomaticKnowledge(columnElements, algoritm);
+                    AutomaticKnowledge automaticForm = new AutomaticKnowledge(columnElements, algoritm, this);
                     this.Hide();
                     automaticForm.Show();
                     break;

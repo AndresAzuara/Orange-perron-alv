@@ -15,47 +15,69 @@ namespace Orange_perron_chido
     {
         List<List<string>> columnas;
         List<string> objective;
+        List<string> columnNames;
+        List<Rules> reglas;
         int index;
+        int contador = 0;
         int columnQuantity;
         string objectiveName;
         public OneRAK(List<List<string>> columnas, int index)
         {
             objective = columnas.ElementAt(index);
-            foreach(var columna in columnas)
+            columnNames = new List<string>();
+            reglas = new List<Rules>();
+            foreach (var columna in columnas)
             {
+                columnNames.Add(columna.ElementAt(0));
                 columna.RemoveAt(0);
             }
             columnas.RemoveAt(index);
+            columnNames.RemoveAt(index);
             columnas.RemoveAt(0);
+            columnNames.RemoveAt(0);
             objectiveName = objective.FirstOrDefault().ToString();
             this.columnas = columnas;
             this.index = index;
             columnQuantity = this.columnas.Count;
             InitializeComponent();
             var frequences = getFrequences();
-
-        }
-
-        private List<int> cantidadDeErrores(List<List<FrequenceList>> frecuenciasPorColumna)
-        {
-            List<int> erroresPorLista = new List<int>();
-            foreach(var columna in frecuenciasPorColumna)
+            var conjuntos = cantidadDeErrores(frequences);
+            foreach(var conjunto in conjuntos)
             {
-                foreach(var atributo in columna)
+                foreach(var element in conjunto)
                 {
-                    foreach(var frecuence in atributo.frequences)
-                    {
-
-                    }
+                    
                 }
             }
-            return erroresPorLista;
+        }
+
+        private List<List<ErrorPorList>> cantidadDeErrores(List<List<FrequenceList>> frecuenciasPorColumna)
+        {
+            List<List<ErrorPorList>> erroresPorObjectivo = new List<List<ErrorPorList>>();
+            var objectives = objective.GroupBy(r => r).Select(r => r.Key).ToList();
+                foreach (var columna in frecuenciasPorColumna)
+                {
+                    foreach (var atributo in columna)
+                    {
+                        var values = atributo.frequences.GroupBy(x => new
+                        {
+                            x.element,
+                            x.objectiveElement
+                        }).Select(t => new ErrorPorList
+                        {
+                            element = t.Key.element,
+                            objectiveElement = t.Key.objectiveElement,
+                            quantity = t.Count()
+                        }).ToList();
+                        erroresPorObjectivo.Add(values);
+                    }
+                }
+            return erroresPorObjectivo;
         }
 
         private List<List<FrequenceList>> getFrequences()
         {
             List<List<FrequenceList>> frecuenciasGlobales = new List<List<FrequenceList>>();
-            var objectives = objective.GroupBy(r => r).Select(r => r.Key).ToList();
             int cantidadFrecuencias;
             bool crearNuevaFrecuencia;
             foreach (var columna in columnas) //va columna por columna

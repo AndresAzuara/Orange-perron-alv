@@ -16,9 +16,11 @@ namespace Orange_perron_chido
     {
 
         List<string> elements;
-        public AutomaticKnowledge(List<string> elements, string algoritmName)
+        Form1 anterior;
+        public AutomaticKnowledge(List<string> elements, string algoritmName, Form1 anterior)
         {
             this.elements = elements;
+            this.anterior = anterior;
             InitializeComponent();
             getZeroR();
         }
@@ -60,6 +62,12 @@ namespace Orange_perron_chido
                 }
                 zeroRElements.Rows.Add(row.ToArray());
             } while (completo);
+        }
+
+        private void regresar_Click(object sender, EventArgs e)
+        {
+            anterior.Show();
+            this.Close();
         }
     }
 }

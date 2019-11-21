@@ -31,6 +31,7 @@
             this.zeroRElements = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.regresar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.zeroRElements)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,11 +61,22 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "label2";
             // 
+            // regresar
+            // 
+            this.regresar.Location = new System.Drawing.Point(664, 181);
+            this.regresar.Name = "regresar";
+            this.regresar.Size = new System.Drawing.Size(124, 23);
+            this.regresar.TabIndex = 3;
+            this.regresar.Text = "Regresar";
+            this.regresar.UseVisualStyleBackColor = true;
+            this.regresar.Click += new System.EventHandler(this.regresar_Click);
+            // 
             // AutomaticKnowledge
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 216);
+            this.Controls.Add(this.regresar);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.zeroRElements);
@@ -81,5 +93,6 @@
         private System.Windows.Forms.DataGridView zeroRElements;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button regresar;
     }
 }
