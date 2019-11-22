@@ -1,5 +1,6 @@
 ﻿using Orange_perron_chido.DTO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,15 +18,25 @@ namespace Orange_perron_chido
         List<string> objective;
         List<string> columnNames;
         List<Rules> reglas;
+        Form1 anterior;
+        Dictionary<string, List<ErrorPorList>> columnasFinales;
         int index;
-        int contador = 0;
+        int i = 0;
+        int contador ;
         int columnQuantity;
         string objectiveName;
-        public OneRAK(List<List<string>> columnas, int index)
+        bool auxiliar;
+        
+        public OneRAK(List<List<string>> columnas, int index, Form1 anterior)
         {
+            
             objective = columnas.ElementAt(index);
             columnNames = new List<string>();
             reglas = new List<Rules>();
+            bool auxiliar;
+            this.anterior = anterior;
+            Rules reglaFinal = new Rules();
+            columnasFinales = new Dictionary<string, List<ErrorPorList>>(); //nombre de la columna y el conjunto de reglas
             foreach (var columna in columnas)
             {
                 columnNames.Add(columna.ElementAt(0));
@@ -40,15 +51,140 @@ namespace Orange_perron_chido
             this.index = index;
             columnQuantity = this.columnas.Count;
             InitializeComponent();
+            reglaFinal = oneR();
+            mostrarReglas(reglaFinal);
+        }
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        public void mostrarReglas(Rules reglas)
+        {
+            nombreReglas.Text = reglas.name;
+            int columnas = 0;
+            int id = 0;
+            int actual = 0;
+            bool completo = true;
+            listaReglas.ColumnCount = reglas.reglas.Count + 1;
+            listaReglas.Columns[columnas++].Name = "ID";
+            foreach(var regla in reglas.reglas)
+            {
+                listaReglas.Columns[columnas].Name = "";
+            }
+            foreach(var regla in reglas.reglas)
+            {
+                ArrayList row = new ArrayList();
+                row.Add(id++);
+                row.Add(regla.element);
+                row.Add(regla.objectiveElement);
+                listaReglas.Rows.Add(row.ToArray());
+            }
+            listaReglas.BorderStyle = BorderStyle.None;
+            listaReglas.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            listaReglas.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            listaReglas.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
+            listaReglas.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+            listaReglas.BackgroundColor = Color.White;
+
+            listaReglas.EnableHeadersVisualStyles = false;
+            listaReglas.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            listaReglas.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            listaReglas.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            listaReglas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        public Rules oneR()
+        {
+            double errorMinimo;
+            int minimo;
             var frequences = getFrequences();
             var conjuntos = cantidadDeErrores(frequences);
-            foreach(var conjunto in conjuntos)
+            List<ErrorPorList> reglasFinales = new List<ErrorPorList>();
+            foreach (var conjunto in conjuntos)
             {
-                foreach(var element in conjunto)
+                foreach (var aux in conjunto)
                 {
-                    
+                    ErrorPorList error = new ErrorPorList();
+                    error.element = aux.element;
+                    error.objectiveElement = aux.objectiveElement;
+                    error.quantity = aux.quantity;
+                    reglasFinales.Add(error);
+                    contador += error.quantity;
+                    if (contador >= columnas.ElementAt(i).Count)
+                    {
+                        columnasFinales.Add(columnNames.ElementAt(i++), reglasFinales);
+                        reglasFinales = new List<ErrorPorList>();
+                        contador = 0;
+                    }
                 }
             }
+            int j;
+            foreach (var col in columnasFinales)
+            {
+                Rules nuevaRegla = new Rules();
+                nuevaRegla.name = col.Key;
+
+                for (int i = 0; i < col.Value.Count; i++)
+                {
+                    auxiliar = false;
+                    SingleError error = new SingleError()
+                    {
+                        element = col.Value.ElementAt(i).element,
+                        objectiveElement = col.Value.ElementAt(i).objectiveElement,
+                        singleError = col.Value.ElementAt(i).quantity
+                    };
+                    nuevaRegla.cantidad += (int)error.singleError;
+                    j = i + 1;
+                    if (j < col.Value.Count)
+                    {
+                        while (col.Value.ElementAt(j).element == error.element)
+                        {
+                            auxiliar = true;
+                            if (col.Value.ElementAt(j).quantity > error.singleError)
+                            {
+                                error.element = col.Value.ElementAt(j).element;
+                                error.objectiveElement = col.Value.ElementAt(j).objectiveElement;
+                                error.singleError = col.Value.ElementAt(j).quantity;
+                            }
+                            if (nuevaRegla.error == 0)
+                            {
+                                nuevaRegla.error = error.singleError;
+                            }
+                            nuevaRegla.cantidad += col.Value.ElementAt(j).quantity;
+                            col.Value.RemoveAt(j);
+                            j++;
+                            if (j >= col.Value.Count)
+                            {
+                                break;
+                            }
+                        }
+                        if (!auxiliar)
+                        {
+                            nuevaRegla.error = 0;
+                        }
+
+                    }
+                    if (error.singleError < nuevaRegla.error)
+                    {
+                        nuevaRegla.error = error.singleError;
+                    }
+                    nuevaRegla.reglas.Add(error);
+                }
+                reglas.Add(nuevaRegla);
+            }
+            errorMinimo = reglas.FirstOrDefault().error / reglas.FirstOrDefault().cantidad;
+            minimo = 0;
+            for (int i = 0; i < reglas.Count; i++)
+            {
+                if ((reglas.ElementAt(i).error / reglas.ElementAt(i).cantidad) < errorMinimo)
+                {
+                    errorMinimo = reglas.ElementAt(i).error / reglas.ElementAt(i).cantidad;
+                    minimo = i;
+                }
+            }
+            return reglas.ElementAt(minimo);
         }
 
         private List<List<ErrorPorList>> cantidadDeErrores(List<List<FrequenceList>> frecuenciasPorColumna)
@@ -126,6 +262,12 @@ namespace Orange_perron_chido
                 frecuenciasGlobales.Add(frecuencias);
             }
             return frecuenciasGlobales;
+        }
+
+        private void regresar_Click(object sender, EventArgs e)
+        {
+            anterior.Show();
+            this.Close();
         }
     }
 }

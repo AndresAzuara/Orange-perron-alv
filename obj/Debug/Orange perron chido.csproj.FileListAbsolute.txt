@@ -24,3 +24,4 @@ C:\Users\pepti\Source\Repos\Orange-perron-alv\obj\Debug\Orange_perron_chido.Stat
 C:\Users\pepti\Source\Repos\Orange-perron-alv\obj\Debug\Orange perron chido.csproj.GenerateResource.cache
 C:\Users\pepti\Source\Repos\Orange-perron-alv\obj\Debug\Orange perron chido.exe
 C:\Users\pepti\Source\Repos\Orange-perron-alv\obj\Debug\Orange perron chido.pdb
+C:\Users\pepti\source\repos\Orange-perron-alv\obj\Debug\Orange_perron_chido.OneRAK.resources

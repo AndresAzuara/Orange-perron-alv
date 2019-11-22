@@ -9,7 +9,12 @@ namespace Orange_perron_chido.DTO
     public class Rules
     {
         public string name { get; set; }
-        public List<List<ErrorPorList>> list { get; set; }
+        public List<SingleError> reglas { get; set; }
         public double error { get; set; }
+        public int cantidad { get; set; }
+        public Rules()
+        {
+            reglas = new List<SingleError>();
+        }
     }
 }

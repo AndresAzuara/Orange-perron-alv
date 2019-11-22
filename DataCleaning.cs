@@ -20,11 +20,13 @@ namespace Orange_perron_chido
         List<string> atributos;
         List<string> elementsToAnalyse;
         int columnIndex;
+        StatisticAnalysisForm anterior;
         BoxPlotElements boxplot;
-        public DataCleaning(List<string> valores, List<string> atributos, List<string> elementsToAnalyse, int columnIndex, BoxPlotElements boxplot)
+        public DataCleaning(List<string> valores, List<string> atributos, List<string> elementsToAnalyse, int columnIndex, BoxPlotElements boxplot, StatisticAnalysisForm anterior)
         {
             this.valores = valores;
             this.atributos = atributos;
+            this.anterior = anterior;
             this.elementsToAnalyse = elementsToAnalyse;
             this.columnIndex = columnIndex;
             this.boxplot = boxplot;
@@ -45,7 +47,13 @@ namespace Orange_perron_chido
             foreach (var atributo in atributos)
             {
                 tablaPrincipal.Columns[columnas++].Name = atributo;
+                nombresColumnas.Items.Add(atributo);
             }
+        }
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void insertarInformacion()
@@ -74,10 +82,28 @@ namespace Orange_perron_chido
         {
             insertarHeader();
             insertarInformacion();
+            foreach(DataGridViewColumn column in tablaPrincipal.Columns)
+            {
+                columns.Items.Add(column.Name);
+            }
+            tablaPrincipal.BorderStyle = BorderStyle.None;
+            tablaPrincipal.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            tablaPrincipal.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            tablaPrincipal.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
+            tablaPrincipal.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+            tablaPrincipal.BackgroundColor = Color.White;
+
+            tablaPrincipal.EnableHeadersVisualStyles = false;
+            tablaPrincipal.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            tablaPrincipal.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            tablaPrincipal.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            tablaPrincipal.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void tablaPrincipal_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            columnIndex = e.ColumnIndex;
+            elementsToAnalyse = obtenerCeldas();
             checarValoresFaltantes();
         }
 
@@ -110,10 +136,78 @@ namespace Orange_perron_chido
             return numbers;
         }
 
+        public int encontrarIndiceTransformar()
+        {
+            string name = nombresColumnas.Text;
+            for (int i = 0; i < tablaPrincipal.Columns.Count; i++)
+            {
+                if (tablaPrincipal.Columns[i].Name == name)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public int encontrarIndice()
+        {
+            string name = columns.Text;
+            for(int i = 0; i < tablaPrincipal.Columns.Count; i++)
+            {
+                if(tablaPrincipal.Columns[i].Name == name)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public List<double> obtenerElementos()
+        {
+            List<double> numeros = new List<double>();
+            double numero;
+            foreach (DataGridViewRow row in tablaPrincipal.Rows)
+            {
+                if (row.Cells[columnIndex].Value != null)
+                {
+                    double.TryParse(row.Cells[columnIndex].Value.ToString(), out numero);
+                    numeros.Add(numero);
+                }
+            }
+            return numeros;
+        }
+
+        public List<string> obtenerCeldas()
+        {
+            List<string> numeros = new List<string>();
+            foreach (DataGridViewRow row in tablaPrincipal.Rows)
+            {
+                if (row.Cells[columnIndex].Value != null)
+                {
+                    numeros.Add(row.Cells[columnIndex].Value.ToString());
+                }
+            }
+            return numeros;
+        }
+
         private void correctOutliers(BoxPlotElements boxplot, List<double> numbers)
         {
-            double diferencia = (boxplot.max - boxplot.q3) - (boxplot.q1 - boxplot.min);
             double newValue;
+            double median;
+            double mode;
+            numbers = obtenerElementos();
+            List<double> finalNumbers = new List<double>();
+            finalNumbers = obtenerElementos();
+            numbers.Sort();
+            boxplot.q1 = Stadistic.getFirstQuartile(numbers);
+            boxplot.q3 = Stadistic.getLastQuartile(numbers);
+            var interquartil = Stadistic.getInterquartileRange(boxplot.q3, boxplot.q1);
+            boxplot.min = Stadistic.getBoxPlotMin(boxplot.q1, interquartil);
+            boxplot.max = Stadistic.getBoxPlotMax(boxplot.q3, interquartil);
+            boxplot.avg = Stadistic.getAverage(numbers);
+            Stadistic.getModeAndMedian(numbers, out mode, out median);
+            boxplot.med = median;
+            double diferencia = (boxplot.max - boxplot.q3) - (boxplot.q1 - boxplot.min);
             if (diferencia == 0)
             {
                 newValue = boxplot.avg;
@@ -122,11 +216,11 @@ namespace Orange_perron_chido
             {
                 newValue = boxplot.med;
             }
-            for (int i = 0; i < numbers.Count; i++)
+            for (int i = 0; i < finalNumbers.Count; i++)
             {
-                if (numbers.ElementAt(i) > boxplot.max || numbers.ElementAt(i) < boxplot.min)
+                if (finalNumbers.ElementAt(i) > boxplot.max || finalNumbers.ElementAt(i) < boxplot.min)
                 {
-                    numbers[i] = newValue;
+                    finalNumbers[i] = newValue;
                     tablaPrincipal.Rows[i].Cells[columnIndex].Value = newValue;
                 }
             }
@@ -172,6 +266,7 @@ namespace Orange_perron_chido
 
         private void corregirOutliers_Click(object sender, EventArgs e)
         {
+            columnIndex = encontrarIndice();
             if (elementIsNumeric(elementsToAnalyse))
             {
                 List<double> numbers = getNumbersList(elementsToAnalyse);
@@ -282,7 +377,7 @@ namespace Orange_perron_chido
                         index = rnd.Next(0, (valores.Count / atributos.Count));
                         index *= atributos.Count;
                         auxArray = new Object[atributos.Count];
-                        for (int y = index; y < index + 4; y++)
+                        for (int y = index; y < index + atributos.Count; y++)
                         {
                             auxArray[o++] = valores.ElementAt(y);
                         }
@@ -310,7 +405,7 @@ namespace Orange_perron_chido
                         } while (index == -1);
                         indices.Add(index);
                         auxArray = new Object[atributos.Count];
-                        for (int y = index; y < index + 4; y++)
+                        for (int y = index; y < index + atributos.Count; y++)
                         {
                             auxArray[o++] = valores.ElementAt(y);
                         }
@@ -350,6 +445,8 @@ namespace Orange_perron_chido
 
         private void transformatValor_Click(object sender, EventArgs e)
         {
+            columnIndex = encontrarIndiceTransformar();
+            elementsToAnalyse = obtenerCeldas();
             switch (transformacionValores.Text)
             {
                 case "Min - Max":
@@ -362,6 +459,12 @@ namespace Orange_perron_chido
                     getZScoreAbsolute();
                     break;
             }
+        }
+
+        private void regresar_Click(object sender, EventArgs e)
+        {
+            anterior.Show();
+            this.Close();
         }
     } 
         }

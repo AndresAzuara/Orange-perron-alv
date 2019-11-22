@@ -61,6 +61,11 @@ namespace Orange_perron_chido
 
         }
 
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private bool elementIsNumeric(List<string> elements)
         {
             double number;
@@ -133,6 +138,18 @@ namespace Orange_perron_chido
                                    }).ToList();
             cargarColumnas(valueAndQuantity);
             cargarInformacion(valueAndQuantity);
+            Frecuencias.BorderStyle = BorderStyle.None;
+            Frecuencias.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            Frecuencias.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            Frecuencias.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
+            Frecuencias.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+            Frecuencias.BackgroundColor = Color.White;
+
+            Frecuencias.EnableHeadersVisualStyles = false;
+            Frecuencias.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            Frecuencias.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            Frecuencias.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            Frecuencias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
         private void cargarColumnas(List<ValueAndQuantityDTO> data)
         {
@@ -157,7 +174,7 @@ namespace Orange_perron_chido
         {
             double mode;
             double median;
-            double average = getAverage(elements);
+            double average = Stadistic.getAverage(elements);
             Object x = 0;
             int i = 0;
             double[] valores = new double[6];
@@ -168,8 +185,8 @@ namespace Orange_perron_chido
             ValueAverage.Text = average.ToString();
             ValueStandarDesviation.Text = standarDesviation.ToString();
             elements.Sort();
-            var quartile1 = getFirstQuartile(elements);
-            var quartile3 = getLastQuartile(elements);
+            var quartile1 = Stadistic.getFirstQuartile(elements);
+            var quartile3 = Stadistic.getLastQuartile(elements);
             var interquartileRange = Stadistic.getInterquartileRange(quartile3, quartile1);
             valores[0] = Stadistic.getBoxPlotMin(quartile1, interquartileRange); //Minimo
             valores[1] = Stadistic.getBoxPlotMax(quartile3, interquartileRange); //Maximo
@@ -202,38 +219,6 @@ namespace Orange_perron_chido
             boxPlot.Annotations.Add(textAnnotation);
         }
 
-        private double getFirstQuartile(List<double> elements)
-        {
-            float value = 0;
-            value = (elements.Count + 1) / 4;
-            int round = (int)value;
-            double deci = value - round;
-            if ((value - Math.Floor(value)) == 0)
-            {
-                return elements.ElementAt((int)value);
-            }
-            else
-            {
-                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
-            }
-        }
-
-        private double getLastQuartile(List<double> elements)
-        {
-            float value = 0;
-            value = 3 * (elements.Count + 1) / 4;
-            int round = (int)value;
-            double deci = value - round;
-            if ((value - Math.Floor(value)) == 0)
-            {
-                return elements.ElementAt((int)value);
-            }
-            else
-            {
-                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
-            }
-        }
-
         private int getStandarDesviation(List<double> numbers, double average)
         {
             double count = 0;
@@ -244,16 +229,6 @@ namespace Orange_perron_chido
             Console.WriteLine(count);
             count /= numbers.Count - 1;
             return (int)Math.Sqrt(count);
-        }
-
-        private double getAverage(List<double> numbers)
-        {
-            double count = 0;
-            foreach(var number in numbers)
-            {
-                count += number;
-            }
-            return count / numbers.Count;
         }
 
         private (bool, List<double>) isNumber()
@@ -305,20 +280,9 @@ namespace Orange_perron_chido
 
         private void limpieza_Click(object sender, EventArgs e)
         {
-            DataCleaning dc = new DataCleaning(valores, atributos, elementsToAnalyse, columnIndex, boxplot);
+            DataCleaning dc = new DataCleaning(valores, atributos, elementsToAnalyse, columnIndex, boxplot, this);
             this.Hide();
             dc.Show();
-            /*
-            checarValoresFaltantes();
-            boxPlot.Series.Clear();
-            boxPlot.Annotations.Clear();
-            List<double> numbers = isNumber().Item2;
-            double[] valores = makeNumericalAnalyse(numbers, columnName);
-            correctOutliers(valores, numbers);
-            boxPlot.Series.Clear();
-            boxPlot.Annotations.Clear();
-            makeNumericalAnalyse(numbers, columnName);
-            */
         }
     }
 }

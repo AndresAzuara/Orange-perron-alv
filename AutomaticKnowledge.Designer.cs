@@ -40,42 +40,53 @@
             this.zeroRElements.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.zeroRElements.Location = new System.Drawing.Point(13, 13);
             this.zeroRElements.Name = "zeroRElements";
-            this.zeroRElements.Size = new System.Drawing.Size(775, 125);
+            this.zeroRElements.Size = new System.Drawing.Size(839, 125);
             this.zeroRElements.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(321, 145);
+            this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.Control;
+            this.label1.Location = new System.Drawing.Point(346, 153);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 13);
+            this.label1.Size = new System.Drawing.Size(170, 20);
             this.label1.TabIndex = 1;
             this.label1.Text = "Cantidad de Registros";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(354, 162);
+            this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(404, 181);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.Size = new System.Drawing.Size(53, 20);
             this.label2.TabIndex = 2;
             this.label2.Text = "label2";
             // 
             // regresar
             // 
-            this.regresar.Location = new System.Drawing.Point(664, 181);
+            this.regresar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(66)))), ((int)(((byte)(82)))));
+            this.regresar.FlatAppearance.BorderSize = 0;
+            this.regresar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.regresar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.regresar.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.regresar.ForeColor = System.Drawing.SystemColors.Control;
+            this.regresar.Location = new System.Drawing.Point(718, 278);
             this.regresar.Name = "regresar";
-            this.regresar.Size = new System.Drawing.Size(124, 23);
+            this.regresar.Size = new System.Drawing.Size(134, 31);
             this.regresar.TabIndex = 3;
             this.regresar.Text = "Regresar";
-            this.regresar.UseVisualStyleBackColor = true;
+            this.regresar.UseVisualStyleBackColor = false;
             this.regresar.Click += new System.EventHandler(this.regresar_Click);
             // 
             // AutomaticKnowledge
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 216);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(66)))), ((int)(((byte)(82)))));
+            this.ClientSize = new System.Drawing.Size(864, 321);
             this.Controls.Add(this.regresar);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);

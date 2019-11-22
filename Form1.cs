@@ -41,6 +41,7 @@ namespace Orange_perron_chido
                 columnToAutomatic.Items.Clear();
                 atributos.RemoveRange(0, atributos.Count);
                 valores.RemoveRange(0, valores.Count);
+                AlgoritmNames.Items.Clear();
             }
             if (ofl.ShowDialog() == DialogResult.OK)
             {
@@ -119,6 +120,8 @@ namespace Orange_perron_chido
             AlgoritmNames.Items.Add("Naive-Bayes");
             AlgoritmNames.Items.Add("K-means");
             AlgoritmNames.Items.Add("K-NN");
+            metodology.Items.Add("K-Fold");
+            metodology.Items.Add("Hold-Out");
         }
 
         private bool isNumericColumn(int index)
@@ -165,42 +168,6 @@ namespace Orange_perron_chido
             return valores;
         }
 
-        private void checarValoresFaltantes()
-        {
-            double mediana;
-            double moda;
-            string titulo = "Corrección de valor";
-            for (int j = 0; j < tablaPrincipal.RowCount - 1; j++)
-            {
-                for(int i = 1; i < tablaPrincipal.ColumnCount; i++)
-                {
-                    if (tablaPrincipal.Rows[j].Cells[i].Value.Equals(""))
-                    {
-                        if (isNumericColumn(i))
-                        {
-                            var values = getColumnList(i);
-                            Stadistic.getModeAndMedian(values, out moda, out mediana);
-                            int value = Prompt.ShowDialog(moda.ToString(), mediana.ToString() , titulo);
-                            switch (value)
-                            {
-                                case 1:
-                                    tablaPrincipal.Rows[j].Cells[i].Value = moda;
-                                    break;
-                                case 2:
-                                    tablaPrincipal.Rows[j].Cells[i].Value = mediana;
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            var values = getCategoricalColumnList(i);
-                            var mode = Stadistic.getCategoricalMode(values);
-                            tablaPrincipal.Rows[j].Cells[i].Value = mode;
-                        }
-                    }
-                }
-            }
-        }
 
         private void cargarInformacion()
         {
@@ -395,7 +362,9 @@ namespace Orange_perron_chido
                     automaticForm.Show();
                     break;
                 case "One-R":
-                    OneRAK oner = new OneRAK(getColumnsValues(), index);
+                    OneRAK oner = new OneRAK(getColumnsValues(), index, this);
+                    this.Hide();
+                    oner.Show();
                     break;
             }
 
@@ -405,6 +374,16 @@ namespace Orange_perron_chido
         private int getColumnIndex(string columnName)
         {
             return tablaPrincipal.Columns[columnName].Index;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

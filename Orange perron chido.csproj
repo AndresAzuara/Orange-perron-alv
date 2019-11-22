@@ -65,6 +65,7 @@
     <Compile Include="DTO\FrequenceList.cs" />
     <Compile Include="DTO\Frequences.cs" />
     <Compile Include="DTO\Rules.cs" />
+    <Compile Include="DTO\SingleError.cs" />
     <Compile Include="DTO\ValueAndQuantityDTO.cs" />
     <Compile Include="DTO\ZeroR.cs" />
     <Compile Include="Form1.cs">
@@ -95,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OneRAK.resx">
+      <DependentUpon>OneRAK.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

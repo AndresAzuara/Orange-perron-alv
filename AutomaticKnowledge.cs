@@ -32,6 +32,23 @@ namespace Orange_perron_chido
             label2.Text = quantity.ToString();
             cargarColumnas(elementsQuantity);
             cargarInformacion(elementsQuantity);
+            zeroRElements.BorderStyle = BorderStyle.None;
+            zeroRElements.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            zeroRElements.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            zeroRElements.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
+            zeroRElements.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+            zeroRElements.BackgroundColor = Color.White;
+
+            zeroRElements.EnableHeadersVisualStyles = false;
+            zeroRElements.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            zeroRElements.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            zeroRElements.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            zeroRElements.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void cargarColumnas(List<ZeroR> elements)

@@ -82,5 +82,37 @@ namespace Orange_perron_chido.Clases
             return suma / numbers.Count;
         }
 
+        public static double getFirstQuartile(List<double> elements)
+        {
+            float value = 0;
+            value = (elements.Count + 1) / 4;
+            int round = (int)value;
+            double deci = value - round;
+            if ((value - Math.Floor(value)) == 0)
+            {
+                return elements.ElementAt((int)value);
+            }
+            else
+            {
+                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
+            }
+        }
+
+        public static double getLastQuartile(List<double> elements)
+        {
+            float value = 0;
+            value = 3 * (elements.Count + 1) / 4;
+            int round = (int)value;
+            double deci = value - round;
+            if ((value - Math.Floor(value)) == 0)
+            {
+                return elements.ElementAt((int)value);
+            }
+            else
+            {
+                return elements.ElementAt(round) + deci * (elements.ElementAt(round + 1) - elements.ElementAt(round));
+            }
+        }
+
     }
 }

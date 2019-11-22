@@ -50,72 +50,88 @@
             // Mode
             // 
             this.Mode.AutoSize = true;
+            this.Mode.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Mode.ForeColor = System.Drawing.SystemColors.Control;
             this.Mode.Location = new System.Drawing.Point(36, 13);
             this.Mode.Name = "Mode";
-            this.Mode.Size = new System.Drawing.Size(34, 13);
+            this.Mode.Size = new System.Drawing.Size(52, 20);
             this.Mode.TabIndex = 0;
             this.Mode.Text = "Moda";
             // 
             // Median
             // 
             this.Median.AutoSize = true;
+            this.Median.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Median.ForeColor = System.Drawing.SystemColors.Control;
             this.Median.Location = new System.Drawing.Point(39, 71);
             this.Median.Name = "Median";
-            this.Median.Size = new System.Drawing.Size(48, 13);
+            this.Median.Size = new System.Drawing.Size(72, 20);
             this.Median.TabIndex = 1;
             this.Median.Text = "Mediana";
             // 
             // Average
             // 
             this.Average.AutoSize = true;
+            this.Average.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Average.ForeColor = System.Drawing.SystemColors.Control;
             this.Average.Location = new System.Drawing.Point(39, 128);
             this.Average.Name = "Average";
-            this.Average.Size = new System.Drawing.Size(51, 13);
+            this.Average.Size = new System.Drawing.Size(81, 20);
             this.Average.TabIndex = 2;
             this.Average.Text = "Promedio";
             // 
             // StandarDesviation
             // 
             this.StandarDesviation.AutoSize = true;
+            this.StandarDesviation.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StandarDesviation.ForeColor = System.Drawing.SystemColors.Control;
             this.StandarDesviation.Location = new System.Drawing.Point(42, 187);
             this.StandarDesviation.Name = "StandarDesviation";
-            this.StandarDesviation.Size = new System.Drawing.Size(105, 13);
+            this.StandarDesviation.Size = new System.Drawing.Size(153, 20);
             this.StandarDesviation.TabIndex = 3;
             this.StandarDesviation.Text = "Desviación Estandar";
             // 
             // ValueMode
             // 
             this.ValueMode.AutoSize = true;
+            this.ValueMode.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ValueMode.ForeColor = System.Drawing.SystemColors.Control;
             this.ValueMode.Location = new System.Drawing.Point(39, 39);
             this.ValueMode.Name = "ValueMode";
-            this.ValueMode.Size = new System.Drawing.Size(13, 13);
+            this.ValueMode.Size = new System.Drawing.Size(18, 20);
             this.ValueMode.TabIndex = 4;
             this.ValueMode.Text = "0";
             // 
             // ValueMedian
             // 
             this.ValueMedian.AutoSize = true;
+            this.ValueMedian.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ValueMedian.ForeColor = System.Drawing.SystemColors.Control;
             this.ValueMedian.Location = new System.Drawing.Point(42, 97);
             this.ValueMedian.Name = "ValueMedian";
-            this.ValueMedian.Size = new System.Drawing.Size(13, 13);
+            this.ValueMedian.Size = new System.Drawing.Size(18, 20);
             this.ValueMedian.TabIndex = 5;
             this.ValueMedian.Text = "0";
             // 
             // ValueAverage
             // 
             this.ValueAverage.AutoSize = true;
+            this.ValueAverage.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ValueAverage.ForeColor = System.Drawing.SystemColors.Control;
             this.ValueAverage.Location = new System.Drawing.Point(42, 154);
             this.ValueAverage.Name = "ValueAverage";
-            this.ValueAverage.Size = new System.Drawing.Size(13, 13);
+            this.ValueAverage.Size = new System.Drawing.Size(18, 20);
             this.ValueAverage.TabIndex = 6;
             this.ValueAverage.Text = "0";
             // 
             // ValueStandarDesviation
             // 
             this.ValueStandarDesviation.AutoSize = true;
+            this.ValueStandarDesviation.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ValueStandarDesviation.ForeColor = System.Drawing.SystemColors.Control;
             this.ValueStandarDesviation.Location = new System.Drawing.Point(45, 218);
             this.ValueStandarDesviation.Name = "ValueStandarDesviation";
-            this.ValueStandarDesviation.Size = new System.Drawing.Size(13, 13);
+            this.ValueStandarDesviation.Size = new System.Drawing.Size(18, 20);
             this.ValueStandarDesviation.TabIndex = 7;
             this.ValueStandarDesviation.Text = "0";
             // 
@@ -141,37 +157,52 @@
             // 
             // back
             // 
-            this.back.Location = new System.Drawing.Point(12, 415);
+            this.back.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(66)))), ((int)(((byte)(82)))));
+            this.back.FlatAppearance.BorderSize = 0;
+            this.back.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.back.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.back.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.back.ForeColor = System.Drawing.SystemColors.Control;
+            this.back.Location = new System.Drawing.Point(12, 405);
             this.back.Name = "back";
-            this.back.Size = new System.Drawing.Size(75, 23);
+            this.back.Size = new System.Drawing.Size(172, 33);
             this.back.TabIndex = 10;
             this.back.Text = "Atras";
-            this.back.UseVisualStyleBackColor = true;
+            this.back.UseVisualStyleBackColor = false;
             this.back.Click += new System.EventHandler(this.back_Click);
             // 
             // dataName
             // 
             this.dataName.AutoSize = true;
+            this.dataName.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataName.ForeColor = System.Drawing.SystemColors.Control;
             this.dataName.Location = new System.Drawing.Point(315, 13);
             this.dataName.Name = "dataName";
-            this.dataName.Size = new System.Drawing.Size(35, 13);
+            this.dataName.Size = new System.Drawing.Size(53, 20);
             this.dataName.TabIndex = 11;
             this.dataName.Text = "label1";
             // 
             // limpieza
             // 
-            this.limpieza.Location = new System.Drawing.Point(13, 353);
+            this.limpieza.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(66)))), ((int)(((byte)(82)))));
+            this.limpieza.FlatAppearance.BorderSize = 0;
+            this.limpieza.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.limpieza.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.limpieza.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.limpieza.ForeColor = System.Drawing.SystemColors.Control;
+            this.limpieza.Location = new System.Drawing.Point(13, 343);
             this.limpieza.Name = "limpieza";
-            this.limpieza.Size = new System.Drawing.Size(75, 23);
+            this.limpieza.Size = new System.Drawing.Size(171, 33);
             this.limpieza.TabIndex = 12;
             this.limpieza.Text = "Limpieza";
-            this.limpieza.UseVisualStyleBackColor = true;
+            this.limpieza.UseVisualStyleBackColor = false;
             this.limpieza.Click += new System.EventHandler(this.limpieza_Click);
             // 
             // StatisticAnalysisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(66)))), ((int)(((byte)(82)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.limpieza);
             this.Controls.Add(this.dataName);
